@@ -2,13 +2,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import os
-from matplotlib import pyplot as plt
-import seaborn as sns
 import plotly.express as px
 
 @st.cache_data
 def load_data():
-    log_odds_dir = '../results/log_odds/platforms/ngram_2/stopwords_english'
+    log_odds_dir = 'results/log_odds/platforms/ngram_2/stopwords_english'
     df = pd.read_csv(os.path.join(log_odds_dir,'democrat_2024_republican_2024.csv'))
     return df
 
