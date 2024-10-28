@@ -31,7 +31,7 @@ def df_filter(df,corpus1_name,corpus2_name,selection):
 def plot_log_odds(df,corpus1_name,corpus2_name,color_scale):
     # Create a scatterplot with interactive tooltips
     fig = px.scatter(df, x='total_count', y='log_odds', #text='term', 
-                    color='log_odds', width=900, height=500,
+                    color='log_odds', #width=1000, height=100,
                     color_continuous_scale=color_scale,
                     opacity=1, color_continuous_midpoint=0,range_color=[-4,4],
                     hover_name='term', log_x=True, log_y=False, 

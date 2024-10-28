@@ -1,6 +1,16 @@
 import streamlit as st
 from visualize_log_odds import visualize_all_tabs, load_data
 
+st.markdown("""
+        <style>
+               .block-container {
+                    padding-top: 2rem;
+                    padding-bottom: 0rem;
+                    padding-left: 5rem;
+                    padding-right: 5rem;
+                }
+        </style>
+        """, unsafe_allow_html=True)
 
 log_odds_dir = 'results/log_odds/platforms/'
 filename = 'democrat_2024_republican_2024.csv'
