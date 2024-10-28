@@ -31,7 +31,7 @@ def df_filter(df,corpus1_name,corpus2_name,selection):
 def plot_log_odds(df,corpus1_name,corpus2_name,color_scale):
     # Create a scatterplot with interactive tooltips
     fig = px.scatter(df, x='total_count', y='log_odds', #text='term', 
-                    color='log_odds', width=900, height=600,
+                    color='log_odds', width=900, height=500,
                     color_continuous_scale=color_scale,
                     opacity=1, color_continuous_midpoint=0,range_color=[-4,4],
                     hover_name='term', log_x=True, log_y=False, 
@@ -58,7 +58,7 @@ def select_and_plot(df_dict,corpus1_name,corpus2_name,selection,color_scale):
     df['total_count'] = df['count 1'] + df['count 2']
     df = df_filter(df,corpus1_name,corpus2_name,selection)
     # Add radio button for showing data or plotting
-    show_plot = st.radio("Show Plot or Table", ('Plot', 'Table'),key=selection,horizontal=True)
+    show_plot = st.radio("Show plot or table",('Plot', 'Table'),key=selection,horizontal=True)
     if show_plot == 'Table':
         df_condensed = df[['term','log_odds','count 1','count 2','total_count']]
         df_condensed.columns = ['Term','Log-Odds',f'{corpus1_name} Count',f'{corpus2_name} Count','Total Count']
