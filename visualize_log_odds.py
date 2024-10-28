@@ -51,7 +51,7 @@ def plot_log_odds(df,corpus1_name,corpus2_name,color_scale):
             font_size=16,
         ),
     )
-    st.plotly_chart(fig)
+    st.plotly_chart(fig,use_container_width=True)
     
 def select_and_plot(df_dict,corpus1_name,corpus2_name,selection,color_scale):
     df = df_dict[selection]
