@@ -28,11 +28,11 @@ def df_filter(df,corpus1_name,corpus2_name,selection):
     return df
 
 
-def plot_log_odds(df,corpus1_name,corpus2_name):
+def plot_log_odds(df,corpus1_name,corpus2_name,color_scale):
     # Create a scatterplot with interactive tooltips
     fig = px.scatter(df, x='total_count', y='log_odds', #text='term', 
                     color='log_odds', width=900, height=600,
-                    color_continuous_scale=px.colors.diverging.RdYlBu,
+                    color_continuous_scale=color_scale,
                     opacity=1, color_continuous_midpoint=0,range_color=[-4,4],
                     hover_name='term', log_x=True, log_y=False, 
                     hover_data={'log_odds': ':.2f',
@@ -53,41 +53,30 @@ def plot_log_odds(df,corpus1_name,corpus2_name):
     )
     st.plotly_chart(fig)
     
-def select_and_plot(df_dict,corpus1_name,corpus2_name,selection):
+def select_and_plot(df_dict,corpus1_name,corpus2_name,selection,color_scale):
     df = df_dict[selection]
     df['total_count'] = df['count 1'] + df['count 2']
     df = df_filter(df,corpus1_name,corpus2_name,selection)
     # Add radio button for showing data or plotting
     show_plot = st.radio("Show Plot or Table", ('Plot', 'Table'),key=selection,horizontal=True)
     if show_plot == 'Table':
-        st.write(df)
+        df_condensed = df[['term','log_odds','count 1','count 2','total_count']]
+        df_condensed.columns = ['Term','Log-Odds',f'{corpus1_name} Count',f'{corpus2_name} Count','Total Count']
+        st.write(df_condensed)
     else:
-        plot_log_odds(df,corpus1_name,corpus2_name)
+        plot_log_odds(df,corpus1_name,corpus2_name,color_scale)
 
-def visualize_all_tabs(df_dict,corpus1_name,corpus2_name):
+def visualize_all_tabs(df_dict,corpus1_name,corpus2_name,color_scale=px.colors.diverging.RdYlBu):
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Words (excl. stop words)", "1-2 Word Phrases","Nouns","Verbs","Adjectives"])
     with tab1:
-        select_and_plot(df_dict,corpus1_name,corpus2_name,'unigram')
+        select_and_plot(df_dict,corpus1_name,corpus2_name,'unigram',color_scale)
     with tab2:
-        select_and_plot(df_dict,corpus1_name,corpus2_name,'bigram')
+        select_and_plot(df_dict,corpus1_name,corpus2_name,'bigram',color_scale)
     with tab3:
-        select_and_plot(df_dict,corpus1_name,corpus2_name,'nouns')
+        select_and_plot(df_dict,corpus1_name,corpus2_name,'nouns',color_scale)
     with tab4:
-        select_and_plot(df_dict,corpus1_name,corpus2_name,'verbs')
+        select_and_plot(df_dict,corpus1_name,corpus2_name,'verbs',color_scale)
     with tab5:
-        select_and_plot(df_dict,corpus1_name,corpus2_name,'adjectives')
-
-
-
-# log_odds_dir = 'results/log_odds/platforms/'
-# filename = 'democrat_2024_republican_2024.csv'
-# corpus1_name = "Democratic Party 2024"
-# corpus2_name = "Republican Party 2024"
-# st.header(f"Democratic vs. Republican Platforms (2024)")
-# st.write("This page visualizes the log-odds ratio of words between the two corpora.\
-#         Log-odds ratio is a measure of the strength of association between a word and a corpus.")
-
-# df_dict = load_data(log_odds_dir,filename)
-# visualize_all_tabs(df_dict,corpus1_name,corpus2_name)
+        select_and_plot(df_dict,corpus1_name,corpus2_name,'adjectives',color_scale)
 
 
